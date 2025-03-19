@@ -1,14 +1,13 @@
-
 <?php
 function alimenterListeDeroulante($elements)
 {
-    echo '<select>';
+    $result = '<select>';
     foreach ($elements as $element) {
-        echo '<option value="' . $element . '">' . $element . '</option>';
+        $result .= '<option value="' . $element . '">' . $element . '</option>';
     }
-    echo '</select>';
+    $result .= '</select>';
+    return $result;
 }
 
 $elements = ["Monsieur", "Madame", "Mademoiselle"];
-alimenterListeDeroulante($elements);
-?>
+echo '<span style="color:#FDC030">' . alimenterListeDeroulante($elements) . '</span>';

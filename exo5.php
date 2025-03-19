@@ -1,25 +1,18 @@
 <?php
-function afficherInputDansTableau($nomsInput)
+function afficherInputs(array $nomsInput = ["Non défini"])
 {
-    echo '<table border="3" style="border-collapse: separate; width: 50%;">'; // Début du tableau avec bordure
-    echo '<thead>';
-    echo '<tr><th colspan="2" style="text-align: center;">Affichage</th></tr>'; // Titre du tableau
-    echo '</thead>';
-    echo '<tbody>';
-    foreach ($nomsInput as $nomChamp) {
-        echo '<tr>';
-        echo '<td><label for="' . strtolower($nomChamp) . '">' . $nomChamp . ' :</label></td>'; // Nom du champ dans une cellule
-        echo '<td><input type="text" name="' . strtolower($nomChamp) . '" id="' . strtolower($nomChamp) . '"></td>'; // Champ de texte dans une cellule
-        echo '</tr>';
+    $result = "<form action='#' method='POST'>";
+    foreach ($nomsInput as $input) {
+        $minInput = mb_strtolower($input);
+        $result .= "<label for='$minInput'>$input</label>
+
+    <input type='text' name='$minInput' id='$minInput'>
+    ";
     }
-    echo '<tr><td colspan="2" style="text-align: center;"><input type="submit" value="Envoyer"></td></tr>'; // Bouton dans une ligne dédiée
-    echo '</tbody>';
-    echo '</table>';
-    echo '</form>'; // Fin du formulaire
+    $result .= "
+</form>";
+    return $result;
 }
 
-// Exemple d'utilisation
-$nomsInput = ["Nom", "Prénom", "Ville"];
-echo '<form method="POST" action="">'; // Début du formulaire
-afficherInputDansTableau($nomsInput);
-echo '</form>'; // Encadrer le tableau avec un formulaire
+$nomsInput = ["Nom", "Prenom", "CP", "Ville", "Pays"];
+echo afficherInputs($nomsInput);

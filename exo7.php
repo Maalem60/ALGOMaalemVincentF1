@@ -1,6 +1,23 @@
-<form method='POST' action='fenetre.php'>
-    <input type="checkbox" name="couleur[]" value="jaune"> Choix 1<br>
-    <input type="checkbox" name="couleur[]" value="bleu"> Choix 2<br>
-    <input type="checkbox" name="couleur[]" value="vert"> Choix 3<br>
 
-</form>
+
+<?php
+function genererInbox($elements)
+{
+    foreach ($elements as $label => $checked) {
+        // Si $checked vaut true, on coche la case, sinon elle reste décochée
+        $isChecked = $checked ? "checked" : "";
+        echo '<label>';
+        echo '<input type="checkbox" ' . $isChecked . '> ' . htmlspecialchars($label);
+        echo '</label><br>';
+    }
+}
+
+// Exemple d'utilisation
+$elements = [
+    "Choix 1" => true,  // Case cochée
+    "Choix 2" => false, // Case non cochée
+    "Choix 3" => true   // Case cochée
+];
+
+genererInbox($elements);
+?>

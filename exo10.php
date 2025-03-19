@@ -1,73 +1,65 @@
+<?php
+// Fonction pour générer les champs de texte
+function afficherInput($nomsInput)
+{
+    foreach ($nomsInput as $nom) {
+        echo '<label>' . htmlspecialchars($nom) . ' :</label><br>';
+        echo '<input type="text" name="' . strtolower($nom) . '" required><br><br>';
+    }
+}
+
+// Fonction pour générer des boutons radio
+function afficherRadio($nomsRadio)
+{
+    foreach ($nomsRadio as $valeur) {
+        echo '<label>';
+        echo '<input type="radio" name="sexe" value="' . strtolower($valeur) . '" required> ' . htmlspecialchars($valeur);
+        echo '</label><br>';
+    }
+}
+
+// Fonction pour générer une liste déroulante
+function alimenterListeDeroulante($elements)
+{
+    echo '<label>Formation :</label><br>';
+    echo '<select name="formation">';
+    foreach ($elements as $formation) {
+        echo '<option value="' . strtolower($formation) . '">' . htmlspecialchars($formation) . '</option>';
+    }
+    echo '</select><br><br>';
+}
+
+// Liste des champs, options et formations
+$nomsInput = ["Nom", "Prénom", "Adresse e-mail", "Ville"];
+$nomsRadio = ["Homme", "Femme"];
+$formations = ["Développeur Logiciel", "Designer web", "Intégrateur", "Chef de projet"];
+?>
+
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <title>Formulaire de Contact</title>
+    <title>Formulaire complet</title>
 </head>
 
 <body>
-    <h2>Formulaire de Contact</h2>
-    <form action="traitement.php" method="post">
-        <label for="nom">Nom:</label>
-        <input type="text" id="nom" name="nom" required><br><br>
+    <form method="POST">
+        <?php
+        // Générer les champs de texte
+        afficherInput($nomsInput);
 
-        <label for="prenom">Prenom:</label>
-        <input type="text" id="prenom" name="prenom" required><br><br>
+        // Générer les boutons radio
+        echo '<label>Sexe :</label><br>';
+        afficherRadio($nomsRadio);
+        echo '<br>';
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br><br>
+        // Générer la liste déroulante
+        alimenterListeDeroulante($formations);
+        ?>
 
-        <label for="ville">Ville:</label>
-        <input type="text" id="ville" name="ville" required><br><br>
-
-        <label for="sexe">Sexe:</label>
-        <input type="text" id="sexe" name="sexe" required><br><br>
-
-        <input type="checkbox" name="couleur[]" value="jaune"> Developpeur Logiciel<br>
-        <input type="checkbox" name="couleur[]" value="bleu"> Designer web<br>
-        <input type="checkbox" name="couleur[]" value="vert"> Chef de Projet<br>
-
-        <input type="submit" value="Envoyer">
+        <!-- Bouton pour soumettre -->
+        <button type="submit">Envoyer</button>
     </form>
 </body>
 
 </html>
-
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Récupération des données du formulaire
-    $nom = htmlspecialchars(trim($_POST['nom']));
-    $prenom = htmlspecialchars(trim($_POST['prenom']));
-    $email = htmlspecialchars(trim($_POST['email']));
-    $ville = htmlspecialchars(trim($_POST['ville']));
-    $sexe = htmlspecialchars(trim($_POST['sexe']));
-
-    // Validation des données
-    if (!empty($nom) && !empty($prenom) && !empty($email) && !empty($ville) && !empty($sexe)) {
-        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            if ($sexe == "M" || $sexe == "F") {
-                // Traitement des données (par exemple, les envoyer par email)
-                $to = "votre-email@example.com";
-                $subject = "Nouveau message de $nom";
-                $body = "Nom: $nom\nPrenom: $prenom\nEmail: $email\nVille: $ville\nSexe: $sexe";
-                $headers = "From: $email";
-
-                if (mail($to, $subject, $body, $headers)) {
-                    echo "Message envoyé avec succès.";
-                } else {
-                    echo "Erreur lors de l'envoi du message.";
-                }
-            } else {
-                echo "Le sexe doit être 'M' ou 'F'.";
-            }
-        } else {
-            echo "Adresse email invalide.";
-        }
-    } else {
-        echo "Tous les champs sont requis.";
-    }
-} else {
-    echo "Méthode de requête non autorisée.";
-}
-?>
